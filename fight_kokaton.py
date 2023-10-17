@@ -149,8 +149,7 @@ def main():
 
                 
         screen.blit(bg_img, [0, 0])
-        
-        screen.blit(bg_img, [0, 0])
+    
         
         if bird.rct.colliderect(bomb.rct):
             # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
@@ -158,6 +157,12 @@ def main():
             pg.display.update()
             time.sleep(1)
             return
+        if beam is not None:
+            if bomb is not None:
+                if beam.rct.colliderect(bomb.rct):  # ビームと爆弾の衝突判定
+                    # 撃墜＝Noneにする
+                    beam = None
+                    bomb = None
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
