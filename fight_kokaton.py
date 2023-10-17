@@ -8,7 +8,7 @@ import pygame as pg
 
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
-NUM_OF_BOMBS =6
+NUM_OF_BOMBS =5
 
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
@@ -149,6 +149,23 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 
+class Score:
+    """
+    スコアに関するクラス
+    """
+    def __init__(self):
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        self.color = (0,0,255)
+        self.score = 0
+        self.img=self.font.render(str(self.score), 0, self.color)
+        self.rct = self.img.get_rect()
+        self.rct.center = WIDTH-100,HEIGHT-50
+    
+    def update(self,screen:pg.Surface):
+        self.img = self.font.render(str(self.score),0,self.color)
+        screen.blit(self.img,self.rct.center)
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -156,6 +173,7 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
+    score = Score()
 
     clock = pg.time.Clock()
     tmr = 0
@@ -166,10 +184,10 @@ def main():
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # キーが押されたら，かつ，キーの種類がスペースキーだったら
                 beam = Beam(bird)
-
+    
         
         screen.blit(bg_img, [0, 0])
-        
+        score.update(screen)
         for bomb in bombs:
             if bird.rct.colliderect(bomb.rct):
                 # ゲームオーバー時に，こうかとん画像を切り替え，1秒間表示させる
@@ -181,6 +199,7 @@ def main():
             if beam is not None:
                 if beam.rct.colliderect(bomb.rct):  # ビームと爆弾の衝突判定
                     # 撃墜＝Noneにする
+                    score.score += 1
                     beam = None
                     bombs[i] = None
                     bird.change_img(6, screen)
