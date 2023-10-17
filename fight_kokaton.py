@@ -164,6 +164,7 @@ def main():
                     # 撃墜＝Noneにする
                     beam = None
                     bomb = None
+                    
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
