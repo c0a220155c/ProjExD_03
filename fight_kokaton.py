@@ -86,8 +86,8 @@ class Beam:
         self.img = pg.image.load(f"ex03/fig/beam.png")
         self.rct = self.img.get_rect()
     
-        bird.rct.left = bird.rct.right
-        self.rct.center = bird.rct.centery 
+        self.rct.left = bird.rct.right
+        self.rct.centery = bird.rct.centery 
         self.vx, self.vy = +5, 0
     
     def update(self, screen: pg.Surface):
