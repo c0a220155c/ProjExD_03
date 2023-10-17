@@ -97,7 +97,6 @@ class Bird:
             self.dire = sum_mv
 
 
-
 class Beam:
     def __init__(self, bird: Bird):
         """
@@ -110,7 +109,6 @@ class Beam:
         self.rct.centery = bird.rct.centery  # こうかとんの中心縦座標
         self.vx, self.vy = +5, 0
 
-
     def update(self, screen: pg.Surface):
         """
         ビームを速度vxにしたがって移動させる
@@ -118,6 +116,7 @@ class Beam:
         """
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)        
+
 
 class Pink:
     def __init__(self, bird:Bird):
@@ -127,7 +126,6 @@ class Pink:
         self.rct.centery = bird.rct.centery  # こうかとんの中心縦座標
         self.vx, self.vy = +8, 0
 
-
     def update(self, screen: pg.Surface):
         """
         ビームを速度vxにしたがって移動させる
@@ -135,6 +133,8 @@ class Pink:
         """
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)        
+
+
 class Bomb:
     """
     爆弾に関するクラス
