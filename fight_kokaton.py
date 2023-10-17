@@ -65,6 +65,7 @@ class Bird:
 
         self.rct = self.img.get_rect()
         self.rct.center = xy
+        self.dire = (+5,0)
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -92,6 +93,9 @@ class Bird:
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self.img = self.imgs[tuple(sum_mv)]
         screen.blit(self.img, self.rct)
+        if sum_mv is not [0,0]:
+            self.dire = sum_mv
+
 
 
 class Beam:
@@ -106,6 +110,7 @@ class Beam:
         self.rct.centery = bird.rct.centery  # こうかとんの中心縦座標
         self.vx, self.vy = +5, 0
 
+
     def update(self, screen: pg.Surface):
         """
         ビームを速度vxにしたがって移動させる
@@ -114,7 +119,22 @@ class Beam:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)        
 
+class Pink:
+    def __init__(self, bird:Bird):
+        self.img = pg.image.load(f"ex03/fig/beam_pink.png")
+        self.rct = self.img.get_rect()
+        self.rct.left = bird.rct.right  # こうかとんの右横座標
+        self.rct.centery = bird.rct.centery  # こうかとんの中心縦座標
+        self.vx, self.vy = +8, 0
 
+
+    def update(self, screen: pg.Surface):
+        """
+        ビームを速度vxにしたがって移動させる
+        引数 screen：画面Surface
+        """
+        self.rct.move_ip(self.vx, self.vy)
+        screen.blit(self.img, self.rct)        
 class Bomb:
     """
     爆弾に関するクラス
@@ -184,7 +204,8 @@ def main():
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # キーが押されたら，かつ，キーの種類がスペースキーだったら
                 beam = Beam(bird)
-    
+            if event.type == pg.KEYDOWN and event.key == pg.K_1:
+                beam = Pink(bird)
         
         screen.blit(bg_img, [0, 0])
         score.update(screen)
@@ -205,6 +226,7 @@ def main():
                     bird.change_img(6, screen)
                     pg.display.update()
                     time.sleep(1)
+            
 
         bombs = [bomb for bomb in bombs if bomb is not None]
 
